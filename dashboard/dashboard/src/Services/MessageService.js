@@ -6,7 +6,7 @@ export const getPay = async (access_token) => {
     const headers = {
         Authorization: `Bearer ${access_token}`,
     };
-    const res = await axiosJWT.get(`${API}/api/v1/message`, {
+    const res = await axiosJWT.get(`${API}/api/v1/reviews`, {
         headers,
     });
     return res.data;
@@ -16,7 +16,7 @@ export const getDetilsPay = async (id, access_token) => {
     const headers = {
         Authorization: `Bearer ${access_token}`,
     };
-    const res = await axiosJWT.get(`${API}/api/v1/message/${id}`, {
+    const res = await axiosJWT.get(`${API}/api/v1/reviews/${id}`, {
         headers,
     });
     return res.data;
@@ -26,7 +26,7 @@ export const updatePay = async (id, data,access_token) => {
     const headers = {
         Authorization: `Bearer ${access_token}`,
     };
-    const res = await axios.put(`${API}/api/v1/message/${id}`, data, {
+    const res = await axios.put(`${API}/api/v1/reviews/${id}`, data, {
         headers,
     });
     return res.data;

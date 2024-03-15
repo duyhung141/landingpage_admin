@@ -5,6 +5,7 @@ import Message from "./Message";
 import { useSelector } from "react-redux";
 import * as MessageService from "../../Services/MessageService";
 import { error } from "jquery";
+import {Link} from "react-router-dom";
 const MessageMain = () => {
       // const paymentList = useSelector((state) => state.paymentList);
       // const { loading, error, payments } = paymentList;
@@ -43,6 +44,11 @@ const MessageMain = () => {
             <section className="content-main">
                 <div className="content-header">
                     <h2 className="content-title">Bình luận</h2>
+                    <div>
+                        <Link to="/message/create" className="btn btn-primary">
+                            Thêm mới
+                        </Link>
+                    </div>
                 </div>
 
                 <div className="card mb-4 shadow-sm">
@@ -53,7 +59,7 @@ const MessageMain = () => {
                             ) : error ? (
                                 <MessageError variant="alert-danger">{error}</MessageError>
                             ) : (
-                                <MessageError data={tempData} search={search} />
+                                <Message data={tempData} search={search} />
                             )}
                         </div>
                     </div>

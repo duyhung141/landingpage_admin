@@ -166,7 +166,7 @@ const AddProductMain = () => {
                     </label>
                     <input
                       type="text"
-                      placeholder="Type here"
+                      placeholder="Tên sản phẩm"
                       className="form-control"
                       id="product_title"
                       required
