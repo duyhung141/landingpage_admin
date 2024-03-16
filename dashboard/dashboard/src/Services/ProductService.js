@@ -8,7 +8,7 @@ export const getAll = async () => {
 };
 
 export const createProduct = async (data, access_token) => {
-  const res = await axiosJWT.post(`${API}/api/v1/product/create`, data, {
+  const res = await axiosJWT.post(`${API}/api/v1/product`, data, {
     headers: {
       Authorization: `Bearer ${access_token}`,
     },
@@ -17,12 +17,12 @@ export const createProduct = async (data, access_token) => {
 };
 
 export const getDetilsProduct = async (id) => {
-  const res = await axios.get(`${API}/api/v1/product/detail/${id}`);
+  const res = await axios.get(`${API}/api/v1/product/${id}`);
   return res.data;
 };
 
 export const updateProduct = async (id, data, access_token) => {
-  const res = await axiosJWT.put(`${API}/api/v1/product//update/${id}`, data, {
+  const res = await axiosJWT.put(`${API}/api/v1/product/${id}`, data, {
     headers: {
       Authorization: `Bearer ${access_token}`,
     },
@@ -31,7 +31,7 @@ export const updateProduct = async (id, data, access_token) => {
 };
 
 export const deleteProduct = async (id, access_token) => {
-  const res = await axiosJWT.delete(`${API}/api/v1/product/delete/${id}`, {
+  const res = await axiosJWT.delete(`${API}/api/v1/product/${id}`, {
     headers: {
       Authorization: `Bearer ${access_token}`,
     },

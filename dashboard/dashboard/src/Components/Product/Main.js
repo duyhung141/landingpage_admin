@@ -38,9 +38,8 @@ const MainProducts = () => {
   };
   const handleDelete = async (id) => {
     if (id) {
-      const access_token = localStorage.getItem("access_token")
       if (window.confirm("Bạn có chắc chắn muốn xóa?")) {
-        await ProductService.deleteProduct(id,access_token)
+        await ProductService.deleteProduct(id)
           .then((res) => {
             if (!toast.isActive(toastId.current)) {
               toastId.current = toast.success("Thành công!", Toastobjects);
@@ -61,12 +60,16 @@ const MainProducts = () => {
       name: "Ảnh",
       selector: (row) => (
         <img
-          src={row.images[0]}
-          alt={row.title}
+          src={row.urlList[0]}
+          // alt={row.title}
           class="img-thumbnail"
           style={{ maxWidth: "50%" }}
         />
       ),
+    },
+    {
+      name: "Tên sản phẩm",
+      selector: (row) => row.name,
     },
     {
       name: "Mô tả",
@@ -78,23 +81,15 @@ const MainProducts = () => {
     },
     {
       name: "Giá gốc",
-      selector: (row) => formattedAmount(row.priceOld),
+      selector: (row) => formattedAmount(row.price),
     },
     {
-      name: "Giá bán",
-      selector: (row) => formattedAmount(row.priceReal),
-    },
-    {
-      name: "Số lượng còn",
-      selector: (row) => row.quantity,
+      name: "Percent Sale",
+      selector: (row) => (row.percentSale),
     },
     {
       name: "Đánh giá",
-      selector: (row) => row.rate,
-    },
-    {
-      name: "Trạng thái",
-      selector: (row) => (row.status ? "Còn hàng" : "Hết hàng"),
+      selector: (row) => '5',
     },
     {
       name: "Hành động",

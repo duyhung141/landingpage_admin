@@ -11,45 +11,34 @@ import { useMutationHooks } from "../../hooks/useMutationHooks";
 import { updateProductSingle } from "../../features/productSlide/ProductSliceNew";
 import { useQuery } from "react-query";
 
-const ToastObjects = {
-  pauseOnFocusLoss: false,
-  draggable: false,
-  pauseOnHover: false,
-  autoClose: 2000,
-};
-
 const EditProductMain = (props) => {
   const { id } = props;
 
   const [name, setName] = useState("");
-  const [rate, setRate] = useState(0);
-  const [priceOld, setPriceOld] = useState(0);
-  const [priceReal, setPriceReal] = useState(0);
-  const [quantity, setQuantity] = useState(0);
+  const [price, setPrice] = useState(0);
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
-  const [images, setImages] = useState([]);
-  const [material, setMaterial] = useState("");
-  const [origin, setOrigin] = useState("");
-  const [ageTram, setAgeTram] = useState("");
-  const [howToUse, setHowToUse] = useState("");
-  const [soLuongHat, setSoLuongHat] = useState(0);
-  const [loaiCharm, setLoaiCharm] = useState("");
-  const [menh, setMenh] = useState("");
-  const [forGender, setForGender] = useState("");
-
-  const dispatch = useDispatch();
+  const [urlList, setUrlList] = useState([]);
+  const [percentSale, setPercentSale] = useState("");
 
   const handleGetDetailsProduct = async () => {
     const res = await ProductService.getDetilsProduct(id);
     return res;
   };
-  const { access_token } = useSelector((state) => state.user);
-  const { productSingle } = useSelector((state) => state.ProductSignle);
   const mutation = useMutationHooks((data) => {
     const { id, access_token, ...rests } = data;
     ProductService.updateProduct(id, rests, access_token);
   });
+  const toastId = React.useRef(null);
+  const Toastobjects = {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  };
   const { data, error, isLoading, isError, isSuccess } = mutation;
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -59,26 +48,13 @@ const EditProductMain = (props) => {
       name,
       category,
       description,
-      images,
-      rate,
-      priceOld,
-      priceReal,
-      material,
-      origin,
-      quantity,
-      old: ageTram,
-      use: howToUse,
-      soLuongHat,
-      type: loaiCharm,
-      forGender,
-      access_token,
+      price,
+      urlList
     });
 
     // mutation.mutate(decoded?.id, { phone, name, email, sex })
   };
-  const submitHandler = (e) => {
-    e.preventDefault();
-  };
+
   const { isLoading: getDetail, data: dataDetail } = useQuery(
     ["products"],
     handleGetDetailsProduct
@@ -88,31 +64,26 @@ const EditProductMain = (props) => {
       setName(dataDetail.name);
       setCategory(dataDetail.category);
       setDescription(dataDetail.description);
-      setImages(dataDetail.images);
-      setRate(dataDetail.rate);
-      setPriceOld(dataDetail.priceOld);
-      setPriceReal(dataDetail.priceReal);
-      setQuantity(dataDetail.quantity);
-      if (dataDetail.material) {
-        setMaterial(dataDetail.material);
-      }
-      if (dataDetail.origin) {
-        setOrigin(dataDetail.origin);
-      }
-      setAgeTram(dataDetail.old);
-      setHowToUse(dataDetail.use);
-      if (dataDetail.count) {
-        setSoLuongHat(dataDetail?.count[0]);
-      }
-      if (dataDetail.type) {
-        setLoaiCharm(dataDetail.type);
-      }
-      //   setMenh(dataDetail.menh);
-      setForGender(dataDetail.slug);
-      setImages(dataDetail.images);
+      setUrlList(dataDetail.urlList);
+      setPrice(dataDetail.price);
+      setPercentSale(dataDetail.percentSale);
     }
   }, [dataDetail]);
 
+  useEffect(() => {
+    if (!error && isSuccess) {
+      if (!toast.isActive(toastId.current)) {
+        toastId.current = toast.success("Thành công!", Toastobjects);
+      }
+    } else if (error) {
+      if (!toast.isActive(toastId.current)) {
+        toastId.current = toast.error(
+          error.response.data.message,
+          Toastobjects
+        );
+      }
+    }
+  }, [error, isSuccess]);
   return (
     <>
       <Toast />
@@ -124,7 +95,8 @@ const EditProductMain = (props) => {
             </Link>
             <h2 className="content-title">Sửa sản phẩm</h2>
             <div>
-              <button type="submit" className="btn btn-primary">Xác nhận sửa
+              <button type="submit" className="btn btn-primary">
+                Xác nhận sửa
               </button>
             </div>
           </div>
@@ -188,14 +160,14 @@ const EditProductMain = (props) => {
                         />
                       </div>
                       <div className="mb-4">
-                        <label className="form-label">Gái gốc</label>
+                        <label className="form-label">Giá gốc</label>
                         <input
                           type="number"
                           placeholder="Type here"
                           className="form-control"
                           required
-                          value={priceOld}
-                          onChange={(e) => setPriceOld(e.target.value)}
+                          value={price}
+                          onChange={(e) => setPrice(e.target.value)}
                         ></input>
                       </div>
                       <div className="mb-4">
@@ -205,183 +177,9 @@ const EditProductMain = (props) => {
                           placeholder="Type here"
                           className="form-control"
                           required
-                          value={priceReal}
-                          onChange={(e) => setPriceReal(e.target.value)}
+                          value={percentSale}
+                          onChange={(e) => setPercentSale(e.target.value)}
                         ></input>
-                      </div>
-                      <div className="mb-4">
-                        <label className="form-label">Đánh giá</label>
-                        <input
-                          type="number"
-                          placeholder="Type here"
-                          className="form-control"
-                          required
-                          value={rate}
-                          onChange={(e) => setRate(e.target.value)}
-                        ></input>
-                      </div>
-                      <div className="mb-4">
-                        <label className="form-label">Số lượng còn lại</label>
-                        <input
-                          type="number"
-                          placeholder="Type here"
-                          className="form-control"
-                          required
-                          value={quantity}
-                          onChange={(e) => setQuantity(e.target.value)}
-                        ></input>
-                      </div>
-                      <div className={material != "" ? "mb-4" : "d-none"}>
-                        <label className="form-label">Chất liệu</label>
-                        <input
-                          type="text"
-                          placeholder="Type here"
-                          className="form-control"
-                          value={material}
-                          onChange={(e) => setMaterial(e.target.value)}
-                        ></input>
-                      </div>
-                      <div className={origin != "" ? "mb-4" : "d-none"}>
-                        <label className="form-label">Nguồn gốc</label>
-                        <select
-                          className="form-select"
-                          onChange={(e) => setOrigin(e.target.value)}
-                        >
-                          <option value="" selected disabled>
-                            None
-                          </option>
-                          <option
-                            value="vietnam"
-                            selected={origin == "Việt Nam"}
-                          >
-                            Việt Nam
-                          </option>
-                          <option
-                            value="philippines"
-                            selected={origin == "Philippines"}
-                          >
-                            Philippines
-                          </option>
-                          <option
-                            value="indonesia"
-                            selected={origin == "Indonesia"}
-                          >
-                            Indonesia
-                          </option>
-                          <option value="indonesia" selected={origin == "Lào"}>
-                            Lào
-                          </option>
-                        </select>
-                      </div>
-                      <div className="mb-4">
-                        <label className="form-label">Tuổi Trầm</label>
-                        <input
-                          type="text"
-                          placeholder="Type here"
-                          className="form-control"
-                          value={ageTram}
-                          onChange={(e) => setAgeTram(e.target.value)}
-                        ></input>
-                      </div>
-                      <div className="mb-4">
-                        <label className="form-label">Cách sử dụng</label>
-                        <textarea
-                          placeholder="Type here"
-                          className="form-control"
-                          value={howToUse}
-                          onChange={(e) => setHowToUse(e.target.value)}
-                        ></textarea>
-                      </div>
-                      <div className={soLuongHat !== 0 ? "mb-4" : "d-none"}>
-                        <label className="form-label">Số lượng hạt</label>
-                        <input
-                          type="text"
-                          placeholder="Type here"
-                          className="form-control"
-                          value={soLuongHat}
-                          onChange={(e) => setSoLuongHat(e.target.value)}
-                        ></input>
-                      </div>
-                      <div className="mb-4">
-                        <label className="form-label">Loại Charm</label>
-                        <input
-                          type="text"
-                          placeholder="Type here"
-                          className="form-control"
-                          value={loaiCharm}
-                          onChange={(e) => setLoaiCharm(e.target.value)}
-                        ></input>
-                      </div>
-                      {/* <div className="mb-4 ">
-                        <label className="form-label">
-                          Choose Type Category
-                        </label>
-                        <div className="d-flex">
-                          <div class="form-check">
-                            <input
-                              class="form-check-input"
-                              type="radio"
-                              name="flexRadioDefault"
-                              id="flexRadioDefault1"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="flexRadioDefault1"
-                            >
-                              Default radio
-                            </label>
-                          </div>
-                          <div class="form-check mx-3">
-                            <input
-                              class="form-check-input"
-                              type="radio"
-                              name="flexRadioDefault"
-                              id="flexRadioDefault2"
-                              checked
-                            />
-                            <label
-                              class="form-check-label"
-                              for="flexRadioDefault2"
-                            >
-                              Default checked radio
-                            </label>
-                          </div>
-                        </div>
-                      </div> */}
-                      <div
-                        className={
-                          description === "Vòng trầm Thiên Mộc Hương"
-                            ? "mb-4"
-                            : "d-none"
-                        }
-                      >
-                        <label className="form-label">Mệnh</label>
-                        <select
-                          className="form-select"
-                          onChange={(e) => setMenh(e.target.value)}
-                        >
-                          <option value="" disabled>
-                            None
-                          </option>
-                          <option value="Kim" selected={menh === "Kim"}>
-                            Vòng tay cho nữ
-                          </option>
-                          <option value="Mộc" selected={menh === "Mộc"}>
-                            Vòng tay cho nam
-                          </option>
-                          <option value="Thuỷ" selected={menh === "Thuỷ"}>
-                            Mệnh Mộc
-                          </option>
-                          <option value="Thuỷ" selected={menh === "Thuỷ"}>
-                            Mệnh Thủy
-                          </option>
-                          <option value="Hỏa" selected={menh === "Hỏa"}>
-                            Mệnh Hỏa
-                          </option>
-                          <option value="Thổ" selected={menh === "Thổ"}>
-                            Mệnh Thổ
-                          </option>
-                        </select>
                       </div>
 
                       <div class="mb-3">
@@ -396,7 +194,7 @@ const EditProductMain = (props) => {
                           multiple
                         />
                         <div className="d-flex mt-3 ">
-                          {images.map((item) => (
+                          {urlList.map((item) => (
                             <img
                               src={item}
                               width="10%"

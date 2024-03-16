@@ -2,7 +2,7 @@ import axios from "axios";
 import { API } from "../utils/apiUrl";
 import { axiosJWT } from "./UserService";
 
-export const getPay = async (access_token) => {
+export const getAll = async (access_token) => {
   const headers = {
     Authorization: `Bearer ${access_token}`,
   };

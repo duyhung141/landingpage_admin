@@ -17,7 +17,7 @@ const Main = () => {
   const hangldeGetAll = async () => {
     setLoading(true);
     const access_token = JSON.parse(localStorage.getItem("access_token"))
-    const res = await PayService.getPay(access_token);
+    const res = await PayService.getAll(access_token);
     const resProduct = await ProductService.getAll();
     setOrders(res);
     setProduct(resProduct)

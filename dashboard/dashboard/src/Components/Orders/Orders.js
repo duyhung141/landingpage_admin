@@ -33,7 +33,7 @@ const Orders = (props) => {
   };
   const hangldeGetAll = async () => {
     setLoading(true);
-    await OrderService.getPay()
+    await OrderService.getAll()
       .then((res) => {
         setLoading(false);
         setTempData(res);
@@ -61,61 +61,62 @@ const Orders = (props) => {
   };
   const columns = [
     {
-      name: "Ảnh",
-      selector: (row) => (
-        <img
-          src={row.order.products[0].image[0]}
-          // alt={row.products[0].title}
-          class="img-thumbnail"
-          style={{ maxWidth: "50%" }}
-        />
-      ),
+      name: "Khách hàng",
+      selector: (row) => row.customer,
+
     },
-  
     {
       name:"Sản phẩm",
-      selector: (row) => row.order.products[0].name,
+      selector: (row) => row.products.name,
     },
     {
-      name: "Địa chỉ giao hàng",
-      selector: (row) => row.order.customerAddress,
+      name: "Tổng giá trị đơn hàng",
+      selector: (row) => row.totalPrice,
       
     },
     {
       name: "Số lượng",
-      selector: (row) => row.order.products[0].quantityOrder,
-    },
-    {
-      name: "Tổng tiền",
-      selector: (row) => formattedAmount(row.order.totalPrice),
+      selector: (row) => row.quantity,
     },
     {
       name: "Trạng thái",
-      selector: (row) => row.order.status,
+      selector: (row) => row.status,
     },
-
     {
-      name: "Hành động",
-      selector: (row) => (
-        <div className="d-flex" style={{ width: "450px" }}>
-          <Link
-            to={`/orders/${row.order._id}/edit`}
-            style={{ marginRight: "5px" }}
-            // className="btn btn-sm btn-outline-success p-2 pb-3 col-md-6"
-          >
-            <button className="btn btn-primary">Sửa</button>
-          </Link>
-          <button
-            type="button"
-            onClick={() => handleDelete(row.order._id)}
-            className="btn btn-danger"
-
-          >
-            Xóa
-          </button>
-        </div>
-      ),
+      name: "Số điện thoại người mua",
+      selector: (row) => (row.phoneCustomer),
     },
+    {
+      name: "Địa chỉ người mua",
+      selector: (row) => (row.addressCus),
+    },
+    {
+      name: "Thời gian mua",
+      selector: (row) => (row.createdAt),
+    },
+
+    // {
+    //   name: "Hành động",
+    //   selector: (row) => (
+    //     <div className="d-flex" style={{ width: "450px" }}>
+    //       <Link
+    //         to={`/orders/${row.order._id}/edit`}
+    //         style={{ marginRight: "5px" }}
+    //         // className="btn btn-sm btn-outline-success p-2 pb-3 col-md-6"
+    //       >
+    //         <button className="btn btn-primary">Sửa</button>
+    //       </Link>
+    //       <button
+    //         type="button"
+    //         onClick={() => handleDelete(row.order._id)}
+    //         className="btn btn-danger"
+
+    //       >
+    //         Xóa
+    //       </button>
+    //     </div>
+    //   ),
+    // },
   ];
   return (
     <>
