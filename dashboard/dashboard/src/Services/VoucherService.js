@@ -16,7 +16,7 @@ export const getPay = async (access_token) => {
     const headers = {
         Authorization: `Bearer ${access_token}`,
     };
-    const res = await axiosJWT.get(`${API}/api/v1/voucher`, {
+    const res = await axiosJWT.get(`${API}/api/v1/review`, {
         headers,
     });
     return res.data;
@@ -46,3 +46,9 @@ export const deletePay = async (id) => {
     const res = await axios.delete(`${API}/api/v1/pay/${id}`);
     return res.data;
 };
+
+export const createReview = async (data) => {
+    const res = await axios.post(`${API}/api/v1/review`, data);
+    return res.data;
+  };
+  

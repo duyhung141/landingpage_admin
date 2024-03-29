@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import Toast from "../LoadingError/Toast";
-import Message from "../LoadingError/Error";
-import Loading from "../LoadingError/LoadingError";
 import axios from "axios";
 import { useMutationHooks } from "../../hooks/useMutationHooks";
 import * as ProductService from "../../Services/ProductService";
-import * as CategoryService from "../../Services/CategoryService";
-
-import { fetchAsyncProducts } from "../../features/productSlide/productSlice";
+import { EditorState, convertToRaw, ContentState } from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
+import draftToHtml from "draftjs-to-html";
+import htmlToDraft from "html-to-draftjs";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 const ToastObjects = {
   pauseOnFocusLoss: false,
@@ -25,14 +24,10 @@ const AddProductMain = () => {
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [images, setImages] = useState([]);
-  const [listCategory, setListCategory] = useState([
-    {
-      name: "Đồ điện tử",
-    },
-    {
-      name: "Đồ gia dụng",
-    }
-  ])
+  const [listCategory, setListCategory] = useState([]);
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+
+  const apiUrl = process.env.REACT_APP_SERVER_URL;
   const toastId = React.useRef(null);
   const Toastobjects = {
     position: "top-right",
@@ -49,18 +44,13 @@ const AddProductMain = () => {
   };
   const mutationAddProduct = useMutationHooks((data) => {
     const { ...rests } = data;
-    const res = ProductService.createProduct( rests );
+    const res = ProductService.createProduct(rests);
     return res;
   });
 
   const submitHandler = async (event) => {
     event.preventDefault();
-    if (
-      name === "" ||
-      category === "" ||
-      description === "" ||
-      price === 0 
-    ) {
+    if (name === "" || category === "" || description === "" || price === 0) {
       if (!toast.isActive(toastId.current)) {
         toastId.current = toast.error("Không được để trống!", Toastobjects);
       }
@@ -93,6 +83,14 @@ const AddProductMain = () => {
     }
   };
 
+ 
+
+  const onEditorStateChange = (newEditorState) => {
+    setEditorState(newEditorState);
+    setDescription(
+      draftToHtml(convertToRaw(newEditorState.getCurrentContent()))
+    );
+  };
   const { error, isLoading, isSuccess, isError } = mutationAddProduct;
   useEffect(() => {
     if (!error && isSuccess) {
@@ -108,6 +106,20 @@ const AddProductMain = () => {
       }
     }
   }, [error, isSuccess]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const dataCategory = await axios.get(`${apiUrl}/api/v1/category`);
+
+      if (dataCategory) {
+        setListCategory(dataCategory.data);
+      }
+    };
+    fetchData();
+  }, []);
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value);
+  };
   return (
     <>
       <Toast />
@@ -153,7 +165,7 @@ const AddProductMain = () => {
                       className="form-select text-capitalize"
                       aria-label="Default select example"
                       onChange={(e) => {
-                        const selectedValue = (e.target.value);
+                        const selectedValue = e.target.value;
                         setCategory(selectedValue);
                       }}
                     >
@@ -161,7 +173,7 @@ const AddProductMain = () => {
                       {listCategory.map((item, index) => (
                         <option
                           key={index}
-                          value={ item.name}
+                          value={item.name}
                           className="text-capitalize"
                         >
                           {item.name}
@@ -173,7 +185,7 @@ const AddProductMain = () => {
                     <label htmlFor="product_price" className="form-label">
                       Mô tả
                     </label>
-                    <input
+                    {/* <input
                       type="text"
                       placeholder="Type here"
                       className="form-control"
@@ -181,6 +193,18 @@ const AddProductMain = () => {
                       required
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
+                    /> */}
+                    <Editor
+                      editorState={editorState}
+                      wrapperClassName="demo-wrapper"
+                      editorClassName="demo-editor"
+                      onEditorStateChange={onEditorStateChange}
+                    />
+                    <textarea
+                      className="form-control"
+                      value={description}
+                      onChange={handleDescriptionChange}
+                      rows="3"
                     />
                   </div>
                   <div className="mb-4">

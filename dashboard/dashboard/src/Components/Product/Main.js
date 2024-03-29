@@ -57,6 +57,12 @@ const MainProducts = () => {
   };
   const columns = [
     {
+      name: "Link tới web",
+      selector: (row) => (
+        <Link to="">{row._id}</Link>
+      ),
+    },
+    {
       name: "Ảnh",
       selector: (row) => (
         <img

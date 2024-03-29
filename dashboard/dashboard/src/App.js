@@ -97,7 +97,7 @@ function App() {
             <Routes>
                 {/*<Route element={<PrivateRoutes/>}>*/}
                     <Route>
-                        <Route path="/" element={<HomeScreen/>}/>
+                        <Route path="/" element={<ProductScreen/>}/>
                         <Route path="/products" element={<ProductScreen/>}/>
                         <Route path="/addproduct" element={<AddProduct/>}/>
                         <Route path="/orders" element={<OrderScreen/>}/>
@@ -115,11 +115,11 @@ function App() {
 
                         <Route path="/voucher" element={<VoucherScreen/>}/>
                         <Route path="/voucher/:id/edit" element={<EditVoucherScreen/>}/>
-                        <Route path="/voucher/create" element={<AddVoucherScreen/>}/>
+                        <Route path="/review/create" element={<AddVoucherScreen/>}/>
 
-                        <Route path="/message" element={<MessageScreen/>}/>
+                        <Route path="/review" element={<MessageScreen/>}/>
                         <Route path="/message/create" element={<AddVoucherScreen/>}/>
-                        <Route path="/message/:id/edit" element={<EditMessageScreen/>}/>
+                        <Route path="/review/:id/edit" element={<EditMessageScreen/>}/>
 
                     {/*</Route>*/}
                 </Route>

@@ -16,7 +16,6 @@ const OrderMain = () => {
   const hangldeGetAll = async () => {
     setLoading(true);
     const access_token = localStorage.getItem("access_token")
-    console.log(typeof access_token)
     await OrderService.getAll(JSON.parse(access_token))
       .then((res) => {
         setLoading(false);

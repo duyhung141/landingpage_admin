@@ -16,9 +16,7 @@ const MessageMain = () => {
 
     const hangldeGetAll = async () => {
         setLoading(true);
-        const access_token = localStorage.getItem("access_token")
-        console.log(typeof access_token)
-        await MessageService.getPay(JSON.parse(access_token))
+        await MessageService.getReview()
             .then((res) => {
                 setLoading(false);
                 setTempData(res);
@@ -45,7 +43,7 @@ const MessageMain = () => {
                 <div className="content-header">
                     <h2 className="content-title">Bình luận</h2>
                     <div>
-                        <Link to="/message/create" className="btn btn-primary">
+                        <Link to="/review/create" className="btn btn-primary">
                             Thêm mới
                         </Link>
                     </div>

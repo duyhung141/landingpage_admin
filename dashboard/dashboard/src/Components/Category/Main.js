@@ -52,10 +52,6 @@ const MainCategory = () => {
       sortable: true,
     },
     {
-      name: "Danh mục con",
-      selector: (row) => row.type,
-    },
-    {
       name: "Thao tác",
       selector: (row) => (
         <>

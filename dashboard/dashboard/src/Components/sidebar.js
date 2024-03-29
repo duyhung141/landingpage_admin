@@ -23,7 +23,7 @@ const Sidebar = () => {
 
         <nav>
           <ul className="menu-aside">
-            <li className="menu-item">
+            {/* <li className="menu-item">
               <NavLink
                 activeClassName="active"
                 className="menu-link"
@@ -33,7 +33,7 @@ const Sidebar = () => {
                 <i className="icon fas fa-home"></i>
                 <span className="text">Thống kê</span>
               </NavLink>
-            </li>
+            </li> */}
             <li className="menu-item">
               <NavLink
                 activeClassName="active"
@@ -54,26 +54,26 @@ const Sidebar = () => {
                 <span className="text">Đơn đặt hàng</span>
               </NavLink>
             </li>
-            {/* <li className="menu-item">
+            <li className="menu-item">
               <NavLink
                 activeClassName="active"
                 className="menu-link"
-                to="/users"
+                to="/category"
               >
                 <i className="icon fas fa-user"></i>
-                <span className="text">Người dùng</span>
+                <span className="text">Category</span>
               </NavLink>
-            </li> */}
-            {/* <li className="menu-item">
+            </li>
+            <li className="menu-item">
               <NavLink
                 activeClassName="active"
                 className="menu-link "
-                to="/category"
+                to="/review"
               >
-                <i className="icon fas fa-shopping-bag"></i>
-                <span className="text">Danh mục</span>
+                <i className="icon fas fa-phone"></i>
+                <span className="text">Bình luận</span>
               </NavLink>
-            </li> */}
+            </li>
 
             {/* <li className="menu-item">
               <NavLink
