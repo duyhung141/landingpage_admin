@@ -59,7 +59,7 @@ const MainProducts = () => {
     {
       name: "Link tới web",
       selector: (row) => (
-        <Link to="">{row._id}</Link>
+        <Link to={`https://anhwatchluxury.shop/product/${row._id}`}>{row._id}</Link>
       ),
     },
     {
