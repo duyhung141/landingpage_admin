@@ -10,6 +10,11 @@ import { fetchAsyncProductSingle } from "../../features/productSlide/productSlic
 import { useMutationHooks } from "../../hooks/useMutationHooks";
 import { updateProductSingle } from "../../features/productSlide/ProductSliceNew";
 import { useQuery } from "react-query";
+import {Editor} from "react-draft-wysiwyg";
+import draftToHtml from "draftjs-to-html";
+import {convertToRaw, EditorState, ContentState} from "draft-js";
+import htmlToDraft from 'html-to-draftjs';
+import './editor.css'
 
 const EditProductMain = (props) => {
   const { id } = props;
@@ -20,7 +25,7 @@ const EditProductMain = (props) => {
   const [description, setDescription] = useState("");
   const [urlList, setUrlList] = useState([]);
   const [percentSale, setPercentSale] = useState("");
-
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const handleGetDetailsProduct = async () => {
     const res = await ProductService.getDetilsProduct(id);
     return res;
@@ -59,6 +64,14 @@ const EditProductMain = (props) => {
     ["products"],
     handleGetDetailsProduct
   );
+
+  const onEditorStateChange = (newEditorState) => {
+    setEditorState(newEditorState);
+    setDescription(
+        draftToHtml(convertToRaw(newEditorState.getCurrentContent()))
+    );
+  };
+
   useEffect(() => {
     if (dataDetail) {
       setName(dataDetail.name);
@@ -67,7 +80,12 @@ const EditProductMain = (props) => {
       setUrlList(dataDetail.urlList);
       setPrice(dataDetail.price);
       setPercentSale(dataDetail.percentSale);
-    }
+
+      const blocksFromHtml = htmlToDraft(dataDetail.description);
+      const { contentBlocks, entityMap } = blocksFromHtml;
+      const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+      const editorState = EditorState.createWithContent(contentState);
+      setEditorState(editorState);    }
   }, [dataDetail]);
 
   useEffect(() => {
@@ -149,10 +167,16 @@ const EditProductMain = (props) => {
                         <label htmlFor="product_price" className="form-label">
                           Mô tả
                         </label>
-                        <input
-                          type="text"
+                        <Editor
+                            editorState={editorState}
+                            wrapperClassName="demo-wrapper"
+                            editorClassName="demo-editor"
+                            onEditorStateChange={onEditorStateChange}
+                            style={{ border: "1px solid #f1f1f1", padding: "10px"}}
+                        />
+                        <textarea
                           placeholder="Type here"
-                          className="form-control"
+                          className="form-control d-none"
                           id="product_price"
                           required
                           value={description}
