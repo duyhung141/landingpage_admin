@@ -108,7 +108,7 @@ const MainProducts = () => {
             <button className="btn btn-warning">Sửa</button>
           </Link>
           <Link
-            style={{ marginLeft: "15px" }}
+            style={{ marginLeft: "10px" }}
             onClick={() => handleDelete(row._id)}
             // className="btn btn-sm btn-outline-success p-2 pb-3 col-md-6"
           >
