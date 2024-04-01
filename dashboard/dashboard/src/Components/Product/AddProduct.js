@@ -19,7 +19,7 @@ const ToastObjects = {
 };
 const AddProductMain = () => {
     const [name, setName] = useState("");
-    const [percentSale, setPercentSale] = useState(0);
+    const [priceSale, setPriceSale] = useState(0);
     const [price, setPrice] = useState(0);
     const [category, setCategory] = useState("");
     const [description, setDescription] = useState("");
@@ -244,7 +244,7 @@ const AddProductMain = () => {
                                             type="number"
                                             placeholder="Type here"
                                             className="form-control"
-                                            onChange={(e) => setPercentSale(e.target.value)}
+                                            onChange={(e) => setPriceSale(e.target.value)}
                                         ></input>
                                     </div>
 

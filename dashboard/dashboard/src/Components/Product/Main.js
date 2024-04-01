@@ -14,6 +14,7 @@ const MainProducts = () => {
   // const { productsStatus } = productList;
   const [tempData, setTempData] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [images, setImages] = useState([]);
 
   const [search, SetSearch] = useState("");
   const handleCloseModal = () => setShowModal(false);
@@ -59,7 +60,9 @@ const MainProducts = () => {
     {
       name: "Link tới web",
       selector: (row) => (
-        <Link to={`https://anhwatchluxury.shop/product/${row._id}`}>{row._id}</Link>
+        <Link to={`https://anhwatchluxury.shop/product/${row._id}`}>
+          {row._id}
+        </Link>
       ),
     },
     {
@@ -91,11 +94,11 @@ const MainProducts = () => {
     },
     {
       name: "Percent Sale",
-      selector: (row) => (row.percentSale),
+      selector: (row) => row.priceSale,
     },
     {
       name: "Đánh giá",
-      selector: (row) => '5',
+      selector: (row) => "5",
     },
     {
       name: "Hành động",
@@ -103,14 +106,14 @@ const MainProducts = () => {
         <>
           <Link
             to={`/product/${row._id}/edit`}
-            // className="btn btn-sm btn-outline-success p-2 pb-3 col-md-6"
+            className="btn btn-sm btn-outline-success p-2 pb-3 col-md-6"
           >
             <button className="btn btn-warning">Sửa</button>
           </Link>
           <Link
             style={{ marginLeft: "10px" }}
             onClick={() => handleDelete(row._id)}
-            // className="btn btn-sm btn-outline-success p-2 pb-3 col-md-6"
+            className="btn btn-sm btn-outline-success p-2 pb-3 col-md-6"
           >
             <button className="btn btn-danger">Xóa</button>
           </Link>
@@ -138,6 +141,7 @@ const MainProducts = () => {
     }
   }, [search]);
 
+ 
   return (
     <>
       <Toast />
