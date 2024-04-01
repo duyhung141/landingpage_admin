@@ -79,7 +79,7 @@ const AddProductMain = () => {
                 category,
                 description,
                 price,
-                percentSale,
+                priceSale,
                 urlList: uploadedImageUrls,
             });
         }
