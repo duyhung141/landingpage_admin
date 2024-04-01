@@ -264,8 +264,8 @@ const EditProductMain = (props) => {
                           placeholder="Type here"
                           className="form-control"
                           required
-                          value={percentSale}
-                          onChange={(e) => setPercentSale(e.target.value)}
+                          value={priceSale}
+                          onChange={(e) => setPriceSale(e.target.value)}
                         ></input>
                       </div>
 
