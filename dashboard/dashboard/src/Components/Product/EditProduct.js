@@ -26,6 +26,8 @@ const EditProductMain = (props) => {
   const [description, setDescription] = useState("");
   const [urlList, setUrlList] = useState([]);
   const [percentSale, setPercentSale] = useState("");
+  const [priceSale, setPriceSale] = useState("");
+
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [loading, setLoading] = useState(false);
   const [images, setImages] = useState([]);
@@ -76,7 +78,8 @@ const EditProductMain = (props) => {
       description,
       price,
       urlList: uploadedImageUrls,
-      priceSale: percentSale,
+      percentSale: percentSale,
+      priceSale: priceSale
     });
   };
 
@@ -100,6 +103,7 @@ const EditProductMain = (props) => {
       setUrlList(dataDetail.urlList);
       setPrice(dataDetail.price);
       setPercentSale(dataDetail.percentSale);
+      setPriceSale(dataDetail.priceSale);
 
       const blocksFromHtml = htmlToDraft(dataDetail.description);
       const { contentBlocks, entityMap } = blocksFromHtml;
