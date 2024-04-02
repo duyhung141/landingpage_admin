@@ -141,6 +141,7 @@ const AddVoucherMain = () => {
                       value={product}
                       onChange={(e)=>setProduct(e.target.value)}
                     >
+                        <option selected>Chọn sản phẩm</option>
                       {listProduct.map((item) => (
                         <option value={item._id}>{item.name}</option>
                       ))}
